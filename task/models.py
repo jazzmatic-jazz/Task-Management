@@ -36,5 +36,8 @@ class Tasks(models.Model):
     due_date = models.DateField(auto_now=False, auto_now_add=False, editable=True)
     is_completed = models.BooleanField(default=False)
 
+    class Meta:
+        verbose_name_plural = 'Task'
+
     def __str__(self):
         return self.title
