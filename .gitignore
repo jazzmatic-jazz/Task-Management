@@ -1,0 +1,9 @@
+*.env
+*.bak
+*.pyc
+*.log
+
+app/migrations/*
+!/app/migrations/__init__.py
+
+db.sqlite3
