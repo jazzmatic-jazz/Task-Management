@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from task.models import User, Tasks
 from django.utils.safestring import mark_safe
@@ -31,7 +31,7 @@ def login_page(request):
             return redirect('home')
      
     # Render the login page template (GET request)
-    return render(request, 'task/login.html')
+    return render(request, 'tasks/login.html')
 
 
 # Define a view function for the registration page
@@ -67,5 +67,11 @@ def register_page(request):
         return redirect('register')
      
     # Render the registration page template (GET request)
-    return render(request, 'task/register.html')
+    return render(request, 'tasks/register.html')
+
  
+@login_required
+def logout_user(request):
+    
+    logout(request)
+    return render(request, 'tasks/logout.html')

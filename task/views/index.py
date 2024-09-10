@@ -10,16 +10,40 @@ from django.shortcuts import render, get_object_or_404, redirect
 def index(request):
     '''
         Homepage where, user can see their tasks
+        Tasks can be sorted according to
+        - completed status
+        - due date
     '''
     user = request.user
     task = Tasks.objects.filter(user=user.id)
-    return render(request, 'task/index.html', context={"task": task})
+
+    if request.method == 'POST':
+        get_status = request.POST.get('completed')
+        get_sort_by = request.POST.get('sort_by')
+
+        # sorting according to the completed status
+        if get_status:
+            if get_status == "True":
+                task = task.filter(is_completed=True)
+            if get_status == "False":
+                task = task.filter(is_completed=False)
+        
+        # sorting acc. to due_date
+        if get_sort_by:
+            task = task.order_by('due_date')
+
+    return render(request, 'tasks/index.html', context={"task": task})
 
 
 @login_required(login_url="/task/login")
 def create_task_view(request):
     '''
         an authenticated user can create new task
+        and that task will be created under the requesting user
+        - title
+        - description
+        - due_date
+        - is_completed
     '''
     if request.method == 'POST':
         form = TaskForm(request.POST)
@@ -31,14 +55,13 @@ def create_task_view(request):
     else:
         form = TaskForm()
 
-    return render(request, 'task/create.html', {'form': form})
+    return render(request, 'tasks/create.html', {'form': form})
 
 
 @login_required(login_url="/task/login")
 def update_task_view(request, pk):
     '''
         an authenticated user can update their tasks
-
     '''
     task = get_object_or_404(Tasks, pk=pk)
 
@@ -55,7 +78,7 @@ def update_task_view(request, pk):
             return redirect('home')
     else:
         form = TaskForm(instance=task)
-    return render(request, 'task/update.html', {'form': form})
+    return render(request, 'tasks/update.html', {'form': form})
 
 
 @login_required(login_url="/task/login")
@@ -72,4 +95,5 @@ def delete_task_view(request, pk):
     if request.method == 'POST':
         task.delete()
         return redirect('home')
-    return render(request, 'task/delete.html', {'task': task})
+    return render(request, 'tasks/delete.html', {'task': task})
+

@@ -1,0 +1,67 @@
+{% extends "tasks/base.html" %}
+
+{%block title%} Home {%endblock title%}
+
+
+{%block content%}
+
+<br>
+<form method="post">
+  {% csrf_token %}
+  <div class="d-flex align-items-center">
+    <a class="btn btn-primary me-3" href="{% url 'create' %}" role="button">Create New Task</a>
+    <div class="col-md-2">
+      <!-- <label for="completed" class="me-2">Completed:</label> -->
+      <select class="form-select me-2" name="completed" id="completed" aria-label="Default select example">
+        <option selected value="">Completed Status</option>
+        <option value="True">Yes</option>
+        <option value="False">No</option>
+
+      </select>
+
+    </div>
+    <!-- Sorting dropdown -->
+    <div class="col-md-2">
+      <!-- <label for="sort_by">Sort by:</label> -->
+      <select class="form-select me-2" name="sort_by" id="sort_by" aria-label="Default select example">
+        <option selected value="">Sort By</option>
+        <option value="due_date">Due Date</option>
+        <option value="completed">Completed</option>
+      </select>
+    </div>
+    <button class="btn btn-outline-success" type="submit">Apply</button>
+
+  </div>
+  <br>
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Title</th>
+        <th scope="col">Description</th>
+        <th scope="col">Due Date</th>
+        <th scope="col">Is Completed</th>
+        <th scope="col">Update</th>
+        <th scope="col">Delete</th>
+      </tr>
+    </thead>
+    <tbody>
+      {%for t in task%}
+      <tr>
+
+        <td>{{t}}</td>
+        <td>{{t.description |truncatechars:60}}</td>
+        <td>{{t.due_date}}</td>
+        <td>{{t.is_completed}}</td>
+        <td><a href="{% url 'update' pk=t.id %}">Update</a></td>
+        <td><a href="{% url 'delete' pk=t.id %}">Delete</a></td>
+
+      </tr>
+      {%endfor%}
+
+    </tbody>
+  </table>
+</form>
+
+
+
+{%endblock content%}

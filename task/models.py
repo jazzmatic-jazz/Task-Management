@@ -30,6 +30,15 @@ class User(AbstractBaseUser, PermissionsMixin):
     
 
 class Tasks(models.Model):
+    '''
+        Task model, where tasks object will be saved
+        field are:
+        - user
+        - title
+        - description
+        - due_date
+        - is_completed
+    '''
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_tasks')
     title = models.CharField(max_length=100, blank=False, null=False)
     description = models.CharField(max_length=350, null=True, blank=True)

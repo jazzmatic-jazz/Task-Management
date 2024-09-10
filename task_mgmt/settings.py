@@ -138,5 +138,5 @@ MEDIA_URL = '/media/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-LOGOUT_REDIRECT_URL = "/task/login"
+LOGOUT_REDIRECT_URL = '/task/login'
 
